@@ -1,0 +1,44 @@
+<form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+  <!-- ... otros campos ... -->
+  <div>
+    <label for="title">Título:</label>
+    <input id="title" formControlName="title">
+    <div *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched">
+      <small style="color: red;">El título es obligatorio.</small>
+    </div>
+  </div>
+  <!-- ... selector de usuario y botón ... -->
+
+   <!-- Selector de Usuario con su validación -->
+  <div>
+    <label for="user">Asignar a:</label>
+    <select id="user" formControlName="userId">
+      <!-- 1. Opción por defecto, deshabilitada y con valor vacío -->
+      <option [ngValue]="null" disabled>Seleccione un usuario...</option>
+      <option *ngFor="let user of users" [value]="user.id">
+        {{ user.name }}
+      </option>
+    </select>
+    <div *ngIf="taskForm.get('userId')?.invalid && taskForm.get('userId')?.touched">
+      <small class="error-message">Debe seleccionar un usuario.</small>
+    </div>
+  </div>
+
+  <!-- Campo de Información Adicional (JSON) -->
+  <!-- <div>
+      <label for="additionalInfo">Información Adicional (JSON):</label>
+      <textarea id="additionalInfo" formControlName="additionalInfo" rows="4"></textarea>
+  </div> -->
+
+  <div>
+  <label for="additionalInfo">Información Adicional (formato JSON):</label>
+  <textarea id="additionalInfo" formControlName="additionalInfo" rows="6"></textarea>
+  <div *ngIf="taskForm.get('additionalInfo')?.errors?.['jsonInvalid']">
+      <small class="error-message">El texto introducido no es un JSON válido.</small>
+  </div>
+</div>
+
+  <!-- 3. Botón deshabilitado si el formulario es inválido -->
+  <button type="submit" [disabled]="taskForm.invalid">Crear Tarea</button>
+
+</form>
