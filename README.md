@@ -214,3 +214,8 @@ WHERE value = @TagFilter
 * Adicionar los campos de auditoria para las tablas como fecha modificación, fecha creación, usuario
 * Adicionar campo usuario activo para consultar solo usuarios activos
 * Permitir la relación de muchos a muchos entre las tablas task y usuarios para visualizar la trazabilidad de cada tarea, respecto a la asignación de cada usuario
+* Permitir a una tarea asignar otro usuario 
+* La lista de prioridades debe ser parametrizable desde la base de datos
+
+
+
