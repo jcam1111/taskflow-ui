@@ -1,22 +1,45 @@
-<div>
-  <!-- Filtro de estados -->
-  <select (change)="onFilterChange($event)">
-    <option value="">Todos los estados</option>
-    <option *ngFor="let status of statuses" [value]="status.id">
-      {{ status.name }}
-    </option>
-  </select>
+<div class="task-list-container">
+  
+  <!-- Encabezado con título y filtro -->
+  <div class="task-list-header">
+    <h2>Lista de Tareas</h2>
+    <select (change)="onFilterChange($event)" aria-label="Filtrar tareas por estado">
+      <option value="">Todos los estados</option>
+      <!-- CORREGIDO: Se cambió status.title a status.name -->
+      <option *ngFor="let status of statuses" [value]="status.id">
+        {{ status.name }}
+      </option>
+    </select>
+  </div>
 
-   <!-- Lista de tareas -->
-  <ul>
-    <li *ngFor="let task of tasks">
-      {{ task.title }} - {{ task.statusName }}
-      <!-- Selector para cambiar estado -->
-      <select (change)="onStatusChange(task.id, $event)">
-        <option *ngFor="let status of statuses" [value]="status.id" [selected]="task.statusId === status.id">
-          {{ status.name }}
-        </option>
-      </select>
-    </li>
-  </ul>
-</div>
+  <!-- Contenedor de la lista de tareas -->
+  <div *ngIf="tasks.length > 0; else noTasks">
+    <ul class="tasks-ul">
+      <li *ngFor="let task of tasks" class="task-item" [attr.data-status]="task.statusName">
+        
+        <div class="task-content">
+          <span class="task-title">{{ task.title }}</span>
+          <span class="task-status-badge">{{ task.statusName }}</span>
+        </div>
+        
+        <div class="task-actions">
+          <select (change)="onStatusChange(task.id, $event)" [value]="task.statusId" aria-label="Cambiar estado de la tarea">
+            <!-- CORREGIDO: Se cambió status.title a status.name -->
+            <option *ngFor="let status of statuses" [value]="status.id">
+              {{ status.name }}
+            </option>
+          </select>
+        </div>
+
+      </li>
+    </ul>
+  </div>
+
+  <!-- Plantilla que se muestra si no hay tareas -->
+  <ng-template #noTasks>
+    <div class="no-tasks-message">
+      <p>No hay tareas para mostrar. ¡Intenta con otro filtro o crea una nueva tarea!</p>
+    </div>
+  </ng-template>
+
+</div>         

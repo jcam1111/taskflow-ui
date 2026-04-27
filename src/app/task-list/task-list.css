@@ -1,0 +1,153 @@
+/* --- Variables de Color y Estilos Globales --- */
+:host {
+  --primary-color: #007bff;
+  --primary-color-hover: #0056b3;
+  --background-color: #f8f9fa;
+  --container-background: #ffffff;
+  --border-color: #dee2e6;
+  --text-color: #343a40;
+  --text-color-light: #6c757d;
+  --shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --border-radius: 8px;
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  
+  display: block;
+  font-family: var(--font-family);
+  background-color: var(--background-color);
+  padding: 24px;
+  border-radius: var(--border-radius);
+}
+
+/* --- Contenedor Principal --- */
+.task-list-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--container-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+
+/* --- Cabecera con el Título y el Filtro --- */
+.task-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.task-list-header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+/* --- Estilos para los Select (Filtro y Cambio de Estado) --- */
+select {
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: #fff;
+  font-size: 14px;
+  font-family: var(--font-family);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+/* --- Contenedor de la Lista de Tareas (ul) --- */
+.tasks-ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* --- Elemento individual de la Tarea (li) --- */
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background-color: var(--container-background);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: 12px;
+}
+
+.task-item:hover {
+  background-color: #fdfdff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+  border-left: 4px solid var(--primary-color);
+  padding-left: 13px; /* 16px - 3px del borde */
+}
+
+/* Contenido de la tarea (título y estado) */
+.task-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.task-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-color);
+  margin-bottom: 4px;
+}
+
+.task-status-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 12px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  width: fit-content; /* Para que el badge solo ocupe lo necesario */
+}
+
+/* --- Colores de los Badges según el Estado --- */
+/*
+  Usamos selectores de atributos para aplicar estilos basados en el texto del estado.
+  Esto requiere que la propiedad `statusName` sea consistente.
+*/
+.task-item[data-status="Pending"] .task-status-badge {
+  background-color: #ffc107; /* Amarillo */
+  color: #343a40;
+}
+
+.task-item[data-status="InProgress"] .task-status-badge {
+  background-color: #17a2b8; /* Cyan/Azul claro */
+}
+
+.task-item[data-status="Done"] .task-status-badge {
+  background-color: #28a745; /* Verde */
+}
+
+.task-item[data-status="Done"] .task-title {
+  text-decoration: line-through;
+  color: var(--text-color-light);
+}
+
+/* Contenedor para las acciones (el select de cambio de estado) */
+.task-actions {
+  min-width: 150px; /* Asegura que el select no se comprima demasiado */
+  text-align: right;
+}
+
+/* --- Mensaje cuando no hay tareas --- */
+.no-tasks-message {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-color-light);
+  font-style: italic;
+}

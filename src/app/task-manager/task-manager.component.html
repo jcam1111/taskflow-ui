@@ -1,0 +1,106 @@
+<div class="task-manager-container">
+  <h2>Gestión de Tareas</h2>
+
+  <!-- Formulario para Crear y Asignar Tareas -->
+  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="task-form" novalidate>
+    <h3>Crear Nueva Tarea</h3>
+
+    <!-- Campo de Título -->
+    <div class="form-group">
+      <label for="title">Título de la Tarea:</label>
+      <input id="title" formControlName="title" placeholder="Ej: Revisar despliegue en producción">
+      <div *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched" class="error-message">
+        El título es obligatorio.
+      </div>
+    </div>
+
+    <!-- REQUERIMIENTO: Asignar una tarea a un usuario -->
+    <!-- Menú desplegable (<select>) que se llena con la lista de usuarios -->
+    <div class="form-group">
+      <label for="user">Asignar a:</label>
+      <select id="user" formControlName="userId">
+        <option [ngValue]="null" disabled>Seleccione un colaborador...</option>
+        <!-- Iteramos sobre el array 'users' para crear una opción por cada uno -->
+        <option *ngFor="let user of users" [value]="user.id">
+          {{ user.name }}
+        </option>
+      </select>
+      <div *ngIf="taskForm.get('userId')?.invalid && taskForm.get('userId')?.touched" class="error-message">
+        Debe asignar la tarea a un usuario.
+      </div>
+    </div>
+
+    <!-- Campo de Información Adicional (JSON) -->
+    <!-- <div class="form-group">
+        <label for="additionalInfo">Información Adicional (JSON):</label>
+        <textarea id="additionalInfo" formControlName="additionalInfo" rows="4"></textarea>
+    </div> -->
+
+     <!-- ======================================================= -->
+    <!-- NUEVA SECCIÓN PARA LA INFORMACIÓN ADICIONAL (JSON)      -->
+    <!-- ======================================================= -->
+    <fieldset class="additional-info-section" formGroupName="additionalInfo">
+      <legend>Información Adicional</legend>
+
+      <!-- Campo de Prioridad -->
+      <div class="form-group">
+        <label for="priority">Prioridad:</label>
+        <select id="priority" formControlName="priority">
+          <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
+        </select>
+      </div>
+
+      <!-- Campo de Fecha Estimada de Finalización -->
+      <div class="form-group">
+        <label for="estimatedEndDate">Fecha Estimada de Finalización:</label>
+        <input id="estimatedEndDate" type="date" formControlName="estimatedEndDate">
+      </div>
+
+      <!-- Campo de Etiquetas -->
+      <div class="form-group">
+        <label>Etiquetas:</label>
+        <div class="tag-input-group">
+          <input formControlName="tagInput" 
+                 placeholder="Escribe una etiqueta y presiona Enter" 
+                 (keydown.enter)="$event.preventDefault(); addTag()">
+          <button type="button" (click)="addTag()">Añadir</button>
+        </div>
+        <div class="tag-container">
+          <span *ngFor="let tag of tags.controls; let i = index" class="tag">
+            {{ tag.value }}
+            <button type="button" class="remove-tag" (click)="removeTag(i)">&times;</button>
+          </span>
+        </div>
+      </div>
+
+      <!-- Campo de Metadatos Libres -->
+      <div class="form-group">
+        <label for="freeMetadata">Metadatos Libres (formato JSON):</label>
+        <textarea id="freeMetadata" formControlName="freeMetadata" rows="4"></textarea>
+        <div *ngIf="taskForm.get('additionalInfo.freeMetadata')?.errors?.['jsonInvalid'] && taskForm.get('additionalInfo.freeMetadata')?.touched" class="error-message">
+          El texto introducido no es un JSON válido.
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Botón de Envío -->
+    <button type="submit" [disabled]="taskForm.invalid">Crear Tarea</button>
+  </form>
+
+  <hr>
+
+  <!-- Lista de Tareas Existentes -->
+  <div class="task-list">
+    <h3>Lista de Tareas</h3>
+    <div *ngIf="tasks.length === 0">No hay tareas para mostrar.</div>
+    <ul>
+      <!-- Mostramos cada tarea y el nombre del usuario asignado -->
+      <li *ngFor="let task of tasks">
+        <strong>{{ task.title }}</strong>
+        <span class="status-badge">{{ task.statusName }}</span>
+        <br>
+        <small>Asignada a: <strong>{{ task.assignedUserName }}</strong></small>
+      </li>
+    </ul>
+  </div>
+</div>

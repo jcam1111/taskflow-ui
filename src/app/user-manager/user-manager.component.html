@@ -1,0 +1,50 @@
+<h3>Gestión de Usuarios</h3>
+
+<!-- MENSAJE DE CONFIRMACIÓN -->
+<!-- Este div aparecerá solo cuando 'successMessage' no sea nulo -->
+<div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+</div>
+
+<!-- Formulario de creación -->
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()" novalidate>
+  <!-- <input formControlName="name" placeholder="Nombre" />
+  <input formControlName="email" placeholder="Correo" type="email" />
+  <button type="submit" [disabled]="userForm.invalid">Crear Usuario</button> -->
+
+  <div class="form-group">
+    <input formControlName="name" placeholder="Nombre" />
+    <!-- Mensaje de error para el nombre -->
+    <div *ngIf="userForm.get('name')?.invalid && userForm.get('name')?.touched" class="error-message">
+      El nombre es obligatorio.
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <input formControlName="email" placeholder="Correo electrónico" type="email" />
+    <!-- Mensajes de error para el email -->
+    <div *ngIf="userForm.get('email')?.touched && userForm.get('email')?.errors" class="error-message">
+        <span *ngIf="userForm.get('email')?.errors?.['required']">El correo es obligatorio.</span>
+        <span *ngIf="userForm.get('email')?.errors?.['email']">El formato del correo no es válido.</span>
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="userForm.invalid">Crear Usuario</button>
+</form>
+
+<hr>
+
+<!-- Listado de usuarios -->
+<h4>Lista de Colaboradores</h4>
+<!-- <ul>
+  <li *ngFor="let user of users">
+    {{ user.name }} - {{ user.email }}
+  </li>
+</ul> -->
+
+<ul>
+  <li *ngFor="let user of users">
+    <span>{{ user.name }}</span>
+    <span class="email">{{ user.email }}</span>
+  </li>
+</ul>

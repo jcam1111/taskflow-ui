@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { TaskListComponent } from './task-list/task-list';
 import { TaskFormComponent } from './task-form/task-form';
+import { UserManagerComponent } from './user-manager/user-manager.component';
+import { TaskManagerComponent } from './task-manager/task-manager.component';
 
 // export const routes: Routes = [];
 
@@ -10,6 +12,14 @@ import { TaskFormComponent } from './task-form/task-form';
 // ng generate component task-form
 
 export const routes: Routes = [
+
+   // --- RUTA PARA EL GESTOR DE USUARIOS ---
+    // Cuando la URL sea 'http://localhost:4200/users', se cargará UserManagerComponent.
+    {
+        path: 'users',
+        component: UserManagerComponent,
+        title: 'Gestión de Usuarios' // Opcional: Establece el título de la página
+    },
   {
     // Cuando el usuario visita la raíz del sitio (ej. http://localhost:4200),
     // será redirigido a la ruta '/tasks'.
@@ -19,9 +29,15 @@ export const routes: Routes = [
   },
   {
     // Cuando la URL es '/tasks', se renderiza el componente que lista las tareas.
-    path: 'tasks',
+    path: 'tasks-list',
     component: TaskListComponent
   },
+  // 2. Añade la nueva ruta para las tareas
+    {
+        path: 'tasks',
+        component: TaskManagerComponent,
+        title: 'Gestión de Tareas'
+    },
   {
     // Cuando la URL es '/tasks/new', se renderiza el formulario para crear una nueva tarea.
     path: 'tasks/new',
