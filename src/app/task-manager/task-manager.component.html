@@ -56,7 +56,18 @@
         <input id="estimatedEndDate" type="date" formControlName="estimatedEndDate">
       </div>
 
-      <!-- Campo de Etiquetas -->
+      
+      <!-- Campo de Metadatos Libres -->
+      <div class="form-group">
+        <label for="freeMetadata">Metadatos Libres (formato JSON):</label>
+        <textarea id="freeMetadata" formControlName="freeMetadata" rows="4"></textarea>
+        <div *ngIf="taskForm.get('additionalInfo.freeMetadata')?.errors?.['jsonInvalid'] && taskForm.get('additionalInfo.freeMetadata')?.touched" class="error-message">
+          El texto introducido no es un JSON válido.
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Campo de Etiquetas -->
       <div class="form-group">
         <label>Etiquetas:</label>
         <div class="tag-input-group">
@@ -73,15 +84,6 @@
         </div>
       </div>
 
-      <!-- Campo de Metadatos Libres -->
-      <div class="form-group">
-        <label for="freeMetadata">Metadatos Libres (formato JSON):</label>
-        <textarea id="freeMetadata" formControlName="freeMetadata" rows="4"></textarea>
-        <div *ngIf="taskForm.get('additionalInfo.freeMetadata')?.errors?.['jsonInvalid'] && taskForm.get('additionalInfo.freeMetadata')?.touched" class="error-message">
-          El texto introducido no es un JSON válido.
-        </div>
-      </div>
-    </fieldset>
 
     <!-- Botón de Envío -->
     <button type="submit" [disabled]="taskForm.invalid">Crear Tarea</button>

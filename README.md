@@ -216,6 +216,8 @@ WHERE value = @TagFilter
 * Permitir la relación de muchos a muchos entre las tablas task y usuarios para visualizar la trazabilidad de cada tarea, respecto a la asignación de cada usuario
 * Permitir a una tarea asignar otro usuario 
 * La lista de prioridades debe ser parametrizable desde la base de datos
+* Permitir a una tarea asignar otro usuario 
+* Menu desplegable escalable que permita adicionar nuevas funcionalidades
 
 
 
