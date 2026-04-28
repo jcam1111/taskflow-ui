@@ -6,7 +6,9 @@ assignedUserName: string;
 statusId: number;
 statusName: string;
 createdAt: Date;
+
 additionalInfo?: string;
 priority?: string;
+  estimatedEndDate?: Date;  // Puede ser null
 tags?: string;
 }

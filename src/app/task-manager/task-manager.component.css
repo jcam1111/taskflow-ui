@@ -156,3 +156,66 @@ button[type="submit"]:disabled {
   float: right; /* Alinear a la derecha */
   margin-left: 10px;
 }
+
+
+
+/* -------------------------------- */
+
+/* ... (todos tus estilos existentes) ... */
+
+
+/* --- Estilos para los Detalles Adicionales en la Lista --- */
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.task-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.additional-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  font-size: 0.9em;
+  color: #495057;
+}
+
+.detail-item strong {
+  color: #343a40;
+}
+
+.task-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag-item {
+  background-color: #6c757d;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: 500;
+}
+
+/* --- Colores de Borde por Prioridad --- */
+/* Usa el atributo data-priority que añadimos en el HTML */
+
+li[data-priority="low"] { border-left-color: #28a745; }
+li[data-priority="medium"] { border-left-color: #007bff; }
+li[data-priority="high"] { border-left-color: #ffc107; }
+li[data-priority="critical"] { border-left-color: #dc3545; }
+
+/* Opcional: Colores para la insignia de prioridad */
+.priority-low { color: #28a745; }
+.priority-medium { color: #007bff; }
+.priority-high { color: #c69500; }
+.priority-critical { color: #dc3545; }

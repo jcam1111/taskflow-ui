@@ -6,6 +6,9 @@ import { User } from '../models/user.model';
 import { CreateTask, TaskService } from '../services/task.service';
 import { UserService } from '../services/user.service';
 import { CreateTaskDto } from '../dto/create-task.dto';
+import { TaskStatus } from '../models/task-status';
+import { TaskStatusService } from '../services/task-status.service';
+import { JsonParsePipe } from '../pipes/json-parse.pipe';
 
 // Importamos nuestros servicios y modelos
 // import { TaskService, Task, CreateTask } from '../../services/task.service';
@@ -24,7 +27,7 @@ export function jsonValidator(control: AbstractControl): ValidationErrors | null
 @Component({
   selector: 'app-task-manager',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule,  JsonParsePipe],
   templateUrl: './task-manager.component.html',
   styleUrls: ['./task-manager.component.css']
 })
@@ -32,6 +35,7 @@ export class TaskManagerComponent implements OnInit {
   taskForm: FormGroup;
   tasks: Task[] = [];
   users: User[] = []; // Array para almacenar los usuarios del <select>
+   statuses: TaskStatus[] = []; // <-- NUEVO: Array para almacenar los estados
 
 // Opciones predefinidas para el desplegable de prioridad
   priorities: string[] = ['Low', 'Medium', 'High', 'Critical'];
@@ -40,6 +44,7 @@ export class TaskManagerComponent implements OnInit {
     private fb: FormBuilder,
     private taskService: TaskService,
     private userService: UserService, // Inyectamos el servicio de usuarios
+    private taskStatusService: TaskStatusService,
     // 1. Inyecta ChangeDetectorRef en el constructor
     private cdr: ChangeDetectorRef
   ) {
@@ -77,6 +82,7 @@ export class TaskManagerComponent implements OnInit {
     // 2. Cargar la lista de usuarios para el formulario.
     this.loadTasks();
     this.loadUsers();
+     this.loadStatuses(); // <-- LLAMAR A ESTE NUEVO MÉTODO
   }
 
    // --- Lógica para manejar etiquetas ---
@@ -92,8 +98,8 @@ export class TaskManagerComponent implements OnInit {
     this.tags.removeAt(index);
   }
 
-  loadTasks(): void {
-    this.taskService.getTasks().subscribe({
+  loadTasks(statusId?: number): void {
+    this.taskService.getTasks(statusId).subscribe({
     //   next: (data) => this.tasks = data,
      next: (data) => {
         this.tasks = data;
@@ -116,6 +122,25 @@ export class TaskManagerComponent implements OnInit {
       },
       error: (err) => console.error('Error al cargar los usuarios', err)
     });
+  }
+
+  // --- NUEVO MÉTODO: Cargar los estados disponibles ---
+  loadStatuses(): void {
+    this.taskStatusService.getStatuses().subscribe({
+      next: (data) => {
+        this.statuses = data;
+        this.cdr.detectChanges(); // Asegura que el selector se actualice
+      },
+      error: (err) => console.error('Error al cargar los estados', err)
+    });
+  }
+
+  // --- NUEVO MÉTODO: Manejar el cambio en el filtro de estado ---
+  onStatusFilterChange(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    const selectedStatusId = selectElement.value ? Number(selectElement.value) : undefined;
+    
+    this.loadTasks(selectedStatusId); // Recarga las tareas con el filtro aplicado
   }
 
 //   onSubmit(): void {

@@ -1,27 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Task } from '../models/task.model';
 
 // Interfaz para una tarea creada (lo que enviamos a la API)
 export interface CreateTask {
   title: string;
   userId: number;
   additionalInfo?: string;
-}
-
-// Interfaz para una tarea recibida (lo que la API nos devuelve)
-// Coincide con el TaskDto del backend
-export interface Task {
-  id: number;
-  title: string;
-  userId: number;
-  assignedUserName: string;
-  statusId: number;
-  statusName: string;
-  createdAt: Date;
-  additionalInfo?: string;
-  priority?: string;
-  tags?: string;
 }
 
 @Injectable({
@@ -34,8 +20,18 @@ export class TaskService {
   constructor(private http: HttpClient) { }
 
   /** Obtiene todas las tareas desde el backend */
-  getTasks(): Observable<Task[]> {
-    return this.http.get<Task[]>(this.apiUrl);
+//   getTasks(): Observable<Task[]> {
+//     return this.http.get<Task[]>(this.apiUrl);
+//   }
+// Modifica getTasks para aceptar un statusId opcional
+  getTasks(statusId?: number): Observable<Task[]> {
+    let params = new HttpParams();
+    if (statusId !== undefined) {
+      params = params.set('statusId', statusId.toString());
+    }
+
+    // Pasa los parámetros en la solicitud GET
+    return this.http.get<Task[]>(this.apiUrl, { params });
   }
 
   /** Crea una nueva tarea */

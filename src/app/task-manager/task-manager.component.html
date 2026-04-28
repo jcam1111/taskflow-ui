@@ -94,6 +94,22 @@
   <!-- Lista de Tareas Existentes -->
   <div class="task-list">
     <h3>Lista de Tareas</h3>
+
+        <!-- ====================================================== -->
+    <!-- NUEVA SECCIÓN: FILTRO POR ESTADO                     -->
+    <!-- ====================================================== -->
+    <div class="filter-section">
+      <label for="statusFilter">Filtrar por Estado:</label>
+      <select id="statusFilter" (change)="onStatusFilterChange($event)">
+        <option value="">Todos</option> <!-- Opción para mostrar todas las tareas -->
+        <!-- Opciones para cada estado, se generarán dinámicamente -->
+        <option *ngFor="let status of statuses" [value]="status.id">
+          {{ status.name }}
+        </option>
+      </select>
+    </div>
+
+
     <div *ngIf="tasks.length === 0">No hay tareas para mostrar.</div>
     <ul>
       <!-- Mostramos cada tarea y el nombre del usuario asignado -->
@@ -102,6 +118,31 @@
         <span class="status-badge">{{ task.statusName }}</span>
         <br>
         <small>Asignada a: <strong>{{ task.assignedUserName }}</strong></small>
+
+         <!-- ======================================================= -->
+          <!--       MOSTRAR INFORMACIÓN ADICIONAL DEL JSON          -->
+          <!-- ======================================================= -->
+          <div class="additional-details">
+            <!-- Mostrar Prioridad (si existe) -->
+            <span *ngIf="task.priority" class="detail-item priority-{{ task.priority.toLowerCase() }}">
+              <strong>Prioridad:</strong> {{ task.priority }}
+            </span>
+
+            <!-- Mostrar Fecha (si existe) -->
+            <span *ngIf="task.estimatedEndDate" class="detail-item">
+              <strong>Fecha Límite:</strong> {{ task.estimatedEndDate | date: 'dd/MM/yyyy' }}
+            </span>
+          </div>
+
+          <!-- Mostrar Etiquetas (si existen) -->
+          <!-- Parseamos el string JSON de tags en el template -->
+          <div *ngIf="task.tags && task.tags !== '[]'" class="task-tags">
+            <span *ngFor="let tag of (task.tags | jsonParse)" class="tag-item">
+              {{ tag }}
+            </span>
+          </div>
+
+        <!-- </div> -->
       </li>
     </ul>
   </div>

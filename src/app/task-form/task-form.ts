@@ -130,7 +130,8 @@ export function jsonValidator(): ValidatorFn {
   // CORRECCIÓN: Importar los módulos necesarios para el formulario
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './task-form.html',
-  // styleUrls: ['./task-form.css']
+   styleUrls: ['./task-form.css']
+   
 })
 export class TaskFormComponent implements OnInit {
   taskForm!: FormGroup;
